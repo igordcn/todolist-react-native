@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, Button} from 'react-native';
+import {View, TextInput, Button, StyleSheet} from 'react-native';
 
 class AddTodo extends Component{
     
@@ -26,12 +26,33 @@ class AddTodo extends Component{
 
     render(){
         return (
-            <View>
-                <TextInput value={this.state.text} onChangeText={text => this.onTextInput(text)}/>
-                <Button onPress={() => this.addTodo()} title="add"/>
+            <View style={styles.container}>
+                <TextInput
+                    style={styles.input}
+                    value={this.state.text} 
+                    onChangeText={text => this.onTextInput(text)}/>
+                <Button
+                    style={styles.button} 
+                    onPress={() => this.addTodo()} 
+                    title="add"/>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container:{
+        width: '100%',
+        padding: 15,
+        backgroundColor: 'lightgray',
+        flexDirection: 'row',
+    },
+    input:{
+        flex: 1,
+    },
+    button:{
+        flexShrink: 0,
+    }
+})
 
 export default AddTodo;
