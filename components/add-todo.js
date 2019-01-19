@@ -46,9 +46,14 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: 'lightgray',
         flexDirection: 'row',
+        alignItems: 'center'
     },
     input:{
         flex: 1,
+        padding: 5,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        marginRight: 10
     },
     button:{
         flexShrink: 0,
