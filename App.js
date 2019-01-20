@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { createStackNavigator, createAppContainer} from 'react-navigation';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import TodoList from './components/todo-list';
 import AddTodo from './components/add-todo';
@@ -23,8 +24,7 @@ class Hello extends Component{
   }
 }*/
 
-
-export default class App extends Component {
+class Home extends Component {
   constructor(){
     super();
     this.state = {
@@ -86,3 +86,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+const AppNavigator = createStackNavigator({
+  Home: {screen: Home}
+})
+
+export default createAppContainer(AppNavigator);
