@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer} from 'react-navigation';
-import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, PermissionsAndroid} from 'react-native';
 import TodoList from './components/todo-list';
 import AddTodo from './components/add-todo';
 
@@ -43,9 +43,11 @@ class TodoDetails extends Component{
     title: 'Todo App'
   }
   render(){
+    const todo = this.props.navigation.getParam('todo');
     return (
       <View>
-        <Text>{this.props.navigation.getParam('text')}</Text>
+        <Text>{todo.text}</Text>
+        <Text>Created at: {todo.location}</Text>
       </View>
     )
   }
@@ -64,25 +66,85 @@ class Home extends Component {
     /*setTimeout(() => {
       this.props.navigation.navigate('TodoDetails', {text: 'Parâmetro 1'});
     }, 3000);*/
+
+    const todo1 = {
+      id: 1,
+      text: 'Almoçar'
+    }
+    const todo2 = {
+      id: 2,
+      text: 'Almoçar'
+    }
+    const todo3 = {
+      id: 3,
+      text: 'Almoçar'
+    }
     this.state = {
-      todos:[{
-        text: 'Almoçar'
-      },{
-        text: 'Trabalhar'
-      },{
-        text: 'Dormir'
-      }]
+      idCount: 3,
+      todos:[todo1, todo2, todo3]
       //name:"Rodrigo"
+    }
+    this.requestMapsPermission();
+  }
+
+  async requestMapsPermission(){
+    try{
+      const isGranted= await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title':'Todo app location access',
+          'message':'We need your location to know here you'
+        }
+      )
+      this.setState({
+        geolocationPermissionGranted: isGranted,
+      })
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  async setTodoLocation(id, coords){
+    const {latitude, longitude} = coords;
+    try{
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=`
+      );
+
+      const data = await response.json();
+
+      if(!data.error_message){
+        
+        const address = data.results[0].formatted_address;
+
+        const { todos } = this.state;
+        todos.find(todo => todo.id === id).location = address;
+        this.setState({
+          todos
+        });
+      }else{
+        throw JSON.stringify(data);
+      }
+    }catch(e){
+      console.error(e);
     }
   }
 
   addTodo(text){
+    const id = this.state.idCount + 1;
     this.setState({
       todos:[
-        {text: text},
+        {id, text},
         ...this.state.todos       
-      ]
+      ],
+      idCount: id
     })
+
+    if(this.state.geolocationPermissionGranted){
+      navigator.geolocation.getCurrentPosition((pos) => {
+        this.setTodoLocation(id, pos.coords)
+      }, null, {enableHighAccuracy: true})
+    }
   }
 
   render() {
