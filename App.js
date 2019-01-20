@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer} from 'react-navigation';
-import {StyleSheet, ScrollView, View} from 'react-native';
+import {StyleSheet, ScrollView, View, Text} from 'react-native';
 import TodoList from './components/todo-list';
 import AddTodo from './components/add-todo';
 
@@ -23,10 +23,47 @@ class Hello extends Component{
     )//{this.state.name}!
   }
 }*/
+const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: '#1564bf',
+    //display: 'none'
+  },
+  headerTintColor: 'white',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    color: 'white'
+  }
+}
+
+
+
+class TodoDetails extends Component{
+  static navigationOptions = {
+    ...defaultNavigationOptions,
+    title: 'Todo App'
+  }
+  render(){
+    return (
+      <View>
+        <Text>{this.props.navigation.getParam('text')}</Text>
+      </View>
+    )
+  }
+}
 
 class Home extends Component {
-  constructor(){
-    super();
+
+  static navigationOptions = {
+    title: 'Home',
+    ...defaultNavigationOptions
+  }
+
+  constructor(props){
+    super(props);
+
+    setTimeout(() => {
+      this.props.navigation.navigate('TodoDetails', {text: 'Parâmetro 1'});
+    }, 3000);
     this.state = {
       todos:[{
         text: 'Almoçar'
@@ -88,7 +125,8 @@ const styles = StyleSheet.create({
 });
 
 const AppNavigator = createStackNavigator({
-  Home: {screen: Home}
+  Home: {screen: Home},
+  TodoDetails: {screen: TodoDetails}
 })
 
 export default createAppContainer(AppNavigator);

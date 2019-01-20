@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     container:{
         width: '100%',
         padding: 15,
-        backgroundColor: 'lightgray',
+        backgroundColor: '#5e9198',
         flexDirection: 'row',
         alignItems: 'center'
     },
