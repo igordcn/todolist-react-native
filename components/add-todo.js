@@ -33,6 +33,7 @@ class AddTodo extends Component{
                     onChangeText={text => this.onTextInput(text)}/>
                 <Button
                     style={styles.button} 
+                    color={styles.button.backgroundColor}
                     onPress={() => this.addTodo()} 
                     title="add"/>
             </View>
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     },
     button:{
         flexShrink: 0,
+        backgroundColor: '#FF0000'
     }
 })
 

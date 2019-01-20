@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
 import TodoList from './components/todo-list';
 import AddTodo from './components/add-todo';
 
@@ -42,8 +42,8 @@ export default class App extends Component {
   addTodo(text){
     this.setState({
       todos:[
-        ...this.state.todos,
-        {text: text}         
+        {text: text},
+        ...this.state.todos       
       ]
     })
   }
@@ -52,7 +52,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <AddTodo add={text => this.addTodo(text)}/>
-        <TodoList todoList={this.state.todos}/>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+          <TodoList todoList={this.state.todos}/> 
+        </ScrollView>
       </View>
     );
   }
@@ -66,9 +68,12 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F5FCFF',
+  },
+  scrollView: {
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
