@@ -61,9 +61,9 @@ class Home extends Component {
   constructor(props){
     super(props);
 
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.props.navigation.navigate('TodoDetails', {text: 'Parâmetro 1'});
-    }, 3000);
+    }, 3000);*/
     this.state = {
       todos:[{
         text: 'Almoçar'
@@ -90,7 +90,9 @@ class Home extends Component {
       <View style={styles.container}>
         <AddTodo add={text => this.addTodo(text)}/>
         <ScrollView contentContainerStyle={styles.scrollView}>
-          <TodoList todoList={this.state.todos}/> 
+          <TodoList
+           todoList={this.state.todos}
+           navigation={this.props.navigation}/> 
         </ScrollView>
       </View>
     );

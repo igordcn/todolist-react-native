@@ -7,7 +7,10 @@ class TodoList extends Component{
         return (
             <View style={styles.container}>
                 {this.props.todoList.map((todo) => (
-                    <Todo text={todo.text}/>
+                    <Todo 
+                        text={todo.text}
+                        navigation={this.props.navigation}
+                    />
                 ))}
             </View>
         )
